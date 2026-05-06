@@ -1,0 +1,228 @@
+:host {
+  display: block;
+}
+
+.back-link {
+  font-family: var(--hand);
+  font-size: 18px;
+  color: var(--ink);
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 6px;
+  text-decoration: none;
+  transition: transform 0.2s var(--ease);
+
+  &:hover {
+    transform: translateX(-3px);
+  }
+}
+
+.crumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+
+  .sep {
+    opacity: 0.5;
+  }
+
+  .crumb-here {
+    color: var(--ink);
+  }
+}
+
+/* ——— Hero card ——— */
+.hero-card {
+  background: color-mix(in oklab, var(--paper) 88%, var(--paper-2));
+  border: 1.4px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: var(--paper-edge), var(--shadow);
+  padding: 24px 22px;
+}
+
+.big-word {
+  font-family: var(--hand);
+  font-weight: 700;
+  font-size: clamp(52px, 13vw, 108px);
+  line-height: 0.95;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  margin: 0 0 8px;
+}
+
+.ch {
+  display: inline-block;
+  transform: translateY(110%);
+  animation: charIn 0.5s var(--ease) forwards;
+}
+
+@keyframes charIn {
+  to { transform: translateY(0); }
+}
+
+.def-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 18px 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--line);
+}
+
+.def-body {
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ink);
+
+  /* Styles for formatted description markup */
+  :global(.gram) {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-right: 8px;
+    white-space: nowrap;
+  }
+
+  :global(.sense) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    margin: 0 6px 0 2px;
+    vertical-align: 1px;
+    flex: none;
+  }
+
+  :global(.syn) {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 6px;
+  }
+
+  :global(.ref) {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+}
+
+.no-def {
+  color: var(--muted);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ——— Tags ——— */
+.tags-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--line);
+}
+
+.tag-pill {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1.2px solid var(--line-strong);
+  color: var(--ink);
+  background: transparent;
+  transition: all 0.2s var(--ease);
+  cursor: default;
+
+  &:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+    transform: translateY(-1px);
+  }
+}
+
+/* ——— Actions ——— */
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--line);
+}
+
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.2px solid var(--line-strong);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+
+  &:hover {
+    border-color: var(--ink);
+    transform: translateY(-1px);
+    background: color-mix(in oklab, var(--paper) 60%, var(--paper-2));
+  }
+}
+
+/* ——— Loading / Error states ——— */
+.loading-state {
+  padding: 48px 0;
+  text-align: center;
+}
+
+.loading-word {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ——— Animation preference ——— */
+@media (prefers-reduced-motion: reduce) {
+  .ch {
+    animation: fade 0.3s ease forwards;
+    transform: none;
+  }
+
+  @keyframes fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}

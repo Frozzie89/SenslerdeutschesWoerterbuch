@@ -1,89 +1,125 @@
-@if (searchTerm.trim() === '') {
-<figure class="art-showcase">
-  <img src="schwarzsee.jpg" alt="Sketch of the landscape in Schwarzsee" />
-  <figcaption>© ChatGPT</figcaption>
-</figure>
-}
+<!-- Greeting -->
+<div class="greeting">
+  <div class="hello">Grüessech <span class="wave" aria-hidden="true">👋</span></div>
+  <div class="today mono">{{ greetingDate() }}</div>
+</div>
 
+<!-- Search engine down warning -->
 @if (searchEngineDown) {
-<div class="error-container">
-  <p><span class="error-title">Achtung:</span> Leider isch grad d Wörtersuechmaschyna düri! Du chasch üs
-    das über
-    <a href="https://github.com/Softcom-Technologies-Organization/SenslerdeutschesWoerterbuch/issues"
-      target="_blank">GitHub Issues</a> mäude.
-  </p>
-</div>
+  <div class="error-container">
+    <p>
+      <strong>Achtung:</strong> Leider isch grad d Wörtersuechmaschyna düri! Du chasch üs das über
+      <a href="https://github.com/Softcom-Technologies-Organization/SenslerdeutschesWoerterbuch/issues" target="_blank">GitHub Issues</a>
+      mäude.
+    </p>
+  </div>
 }
 
-<div class="search-box">
-  <mat-form-field>
-    <mat-label>Suechi</mat-label>
-    <input matInput type="text" placeholder="Probiers ifach us..." [formControl]="searchControl" />
-  </mat-form-field>
-
-  <mat-form-field class="tag-filter-drowpdown" appearance="fill">
-    <mat-label>
-      <mat-icon aria-label="Label icon">label</mat-icon>
-      Aaziige na Tag
-    </mat-label>
-    <mat-select (selectionChange)="onTagsChanged($event.value)" multiple>
-      <mat-option *ngFor="let tag of tags" [value]="tag">
-        {{ tag.display_name || tag.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <button (click)="randomWordSearch()" matButton="tonal" class="random-search-button">
-    <mat-icon aria-label="Dice icon" fontSet="material-icons-outlined">casino</mat-icon>
-    <span>Yyrgend iis Wort</span>
-  </button>
-
-</div>
-
-@if (result?.hits?.hits) {
-  @for (hit of result.hits.hits; track hit._id) {
-  <mat-card>
-    <mat-card-header class="result-header">
-      <mat-card-title>
-        <a [routerLink]="['/', 'word', hit._source.id]" class="result-link">
-          {{ hit._source.term }}
-        </a>
-      </mat-card-title>
-
-      <span class="result-tags">
-        <mat-icon>label</mat-icon>
-        @for (tag of hit._source.tags; track tag) {
-          <span class="result-tag">{{ tag.display_name || tag.name}}</span>
-        }
-      </span>
-    </mat-card-header>
-    
-    <mat-divider class="card-divider"></mat-divider>
-
-    <mat-card-content>
-      {{ hit._source["description"] }}
-    </mat-card-content>
-  </mat-card>
-  }
-@if (result.hits.total.value === 0 && searchTerm.trim() != '') {
-<div class="no-searchresult-msg" data-testid="no-searchresult-msg">
-  <div class="no-searchresult-content">
-    Für e Suechbegrüff <span>&laquo; {{ searchTerm }} &raquo;</span>, mit de usgwäuhte Tags, hiimer nüt gfunne.
-    <ul>
-      <li>We du zgfüh hesch das Wort fehlt
-        no, chasch das Wort gärn über
-        <a href="https://github.com/Softcom-Technologies-Organization/SenslerdeutschesWoerterbuch/issues"
-          target="_blank">GitHub Issues</a>
-        ischücke.
-      </li>
-      <li>U schüsch musch ifach nach amena andere Wort sueche.</li>
-    </ul>
+<!-- Search card -->
+<div class="card search-card">
+  <div class="search-row">
+    <input
+      class="search-input"
+      type="text"
+      placeholder="Wort sueche…"
+      autocomplete="off"
+      [formControl]="searchControl"
+    />
   </div>
 </div>
-}
+
+<!-- Action row -->
+<div class="action-row">
+  <button class="btn" id="btnRandom" (click)="randomWordSearch()">
+    <span class="die" aria-hidden="true">🎲</span>
+    <span>Zuefall</span>
+    <span class="tooltip">Zufallswort</span>
+  </button>
+  <button class="btn" [class.is-active]="tagsOpen" (click)="toggleTags()">
+    <span class="hash">#</span>
+    <span>Tags</span>
+    <span class="caret" [class.open]="tagsOpen" aria-hidden="true">▾</span>
+  </button>
+</div>
+
+<!-- Tags panel -->
+<div class="tags-panel" [class.is-open]="tagsOpen">
+  <div class="card tight">
+    <div class="tags-grid">
+      @for (tag of tags; track tag) {
+        <button class="tag-chip" [class.is-on]="isTagSelected(tag)" (click)="toggleTag(tag)">
+          <span class="dot" aria-hidden="true"></span>
+          {{ tagDisplayName(tag) }}
+        </button>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Active filters -->
+@if (activeTags.length > 0) {
+  <div class="active-filters">
+    <span class="filter-lbl mono">Aktiv</span>
+    @for (tagName of activeTags; track tagName) {
+      <span class="active-chip">
+        #{{ tagName }}
+        <button (click)="removeTag(tagName)" aria-label="Tag entfernen">×</button>
+      </span>
+    }
+    <button class="clear-all" (click)="clearTags()">alli leere</button>
+  </div>
 }
 
+<!-- Results -->
+<div class="card results">
+  <div class="strip">
+    <span class="mono">Resultat</span>
+    <span class="mono">Sensisch → Düütsch</span>
+  </div>
+  <div class="rows">
+    @if (result?.hits?.hits?.length > 0) {
+      @for (hit of result.hits.hits; track hit._id; let i = $index) {
+        <a class="row"
+           [routerLink]="['/', 'word', hit._source.id]"
+           [style.animation-delay]="(i * 55) + 'ms'">
+          <div>
+            <div class="row-word" [innerHTML]="highlightMatch(hit._source.term, searchTerm)"></div>
+            <div class="row-de">{{ hit._source.description ?? hit._source.de ?? '' }}</div>
+          </div>
+          <div class="row-right">
+            <span class="row-pos">
+              @for (tag of (hit._source.tags ?? []); track tag; let first = $first) {
+                @if (first) { {{ tag.display_name || tag.name }} }
+              }
+            </span>
+            <span class="chev" aria-hidden="true">›</span>
+          </div>
+        </a>
+      }
+    } @else if (result !== null && searchTerm.trim() !== '') {
+      <div class="empty" data-testid="no-searchresult-msg">
+        <div class="empty-big">Kei Treffer – magsch es yytreege?</div>
+        <div class="empty-lil">
+          Für &laquo;{{ searchTerm }}&raquo; hiimer nüt gfunne. Du chasch das Wort über
+          <a href="https://github.com/Softcom-Technologies-Organization/SenslerdeutschesWoerterbuch/issues"
+             target="_blank" rel="noopener">GitHub Issues</a>
+          ischücke.
+        </div>
+      </div>
+    } @else if (result !== null && activeTags.length > 0) {
+      <div class="empty">
+        <div class="empty-big">Kei Treffer</div>
+        <div class="empty-lil">Probier aneregi Tags.</div>
+      </div>
+    } @else {
+      <div class="empty">
+        <div class="empty-lil">Gib es Wort y, oder drück uuf Zuefall.</div>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Sponsorship -->
 <div class="sponsored">
-  <p>Unterstützt va <a href="https://softcom.pro/inscription-seislermaess/?lang=de" target="_blank">Softcom
-      Technologies SA</a></p>
+  <p>Unterstützt va <a href="https://softcom.pro/inscription-seislermaess/?lang=de" target="_blank" rel="noopener">Softcom Technologies SA</a></p>
 </div>

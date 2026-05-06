@@ -1,0 +1,36 @@
+:host {
+  display: block;
+}
+
+.feedback-h {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 28px;
+  color: var(--ink);
+  line-height: 1.2;
+  margin: 0 0 16px;
+}
+
+.feedback-body {
+  p {
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ink);
+    margin: 0 0 14px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  a {
+    color: var(--red);
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

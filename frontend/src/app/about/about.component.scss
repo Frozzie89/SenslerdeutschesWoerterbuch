@@ -1,25 +1,71 @@
-@use "variables";
+:host {
+  display: block;
+}
 
-.content-wrapper {
+.about-h {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 32px;
+  color: var(--ink);
+  line-height: 1.15;
+  margin: 0 0 20px;
+}
+
+.about-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2em;
+  gap: 28px;
   align-items: start;
 }
 
-.image-content {
+.about-text {
+  p {
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ink);
+    margin: 0 0 14px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  a {
+    color: var(--red);
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.about-portrait {
   justify-self: center;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border: 1.4px solid var(--ink);
+    border-radius: 8px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .caption {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin: 8px 0 0;
+    text-align: center;
+  }
 }
 
-.image-content img {
-  max-width: 100%;
-  height: auto;
-  margin-top: 1em;
-}
-
-/* Simple breakpoint - desktop and up */
-@media (min-width: variables.$Small-breakpoint) {
-  .content-wrapper {
+@media (min-width: 640px) {
+  .about-grid {
     grid-template-columns: 2fr 1fr;
   }
 }

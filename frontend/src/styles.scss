@@ -1,41 +1,92 @@
-@use '@angular/material' as mat;
-@use 'col';
+:root {
+  --ink: #0e2a4a;
+  --ink-2: #142e52;
+  --paper: #f6efd9;
+  --paper-2: #ebe2c4;
+  --paper-3: #e3d8b3;
+  --gold: #e7c66a;
+  --gold-soft: #f1d98a;
+  --red: #c8332b;
+  --muted: rgba(14, 42, 74, 0.55);
+  --muted-2: rgba(14, 42, 74, 0.35);
+  --line: rgba(14, 42, 74, 0.18);
+  --line-strong: rgba(14, 42, 74, 0.42);
+  --shadow: 0 1px 2px rgba(14, 42, 74, 0.05), 0 12px 32px -12px rgba(14, 42, 74, 0.18);
+  --paper-edge: 0 0 0 1.4px var(--ink), 2px 2px 0 var(--ink);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --hand: 'Caveat', 'Comic Sans MS', cursive;
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
 
-html {
-  color-scheme: light dark;
-  @include mat.theme((color: mat.$red-palette,
-      typography: 'Noto Sans',
-      density: 0));
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 html,
 body {
+  margin: 0;
+  padding: 0;
   height: 100%;
 }
 
 body {
-  margin: 0;
-  font-family: 'Noto Sans', "Helvetica Neue", sans-serif;
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  background-image:
+    radial-gradient(ellipse 70% 40% at 30% -5%, rgba(231, 198, 106, 0.14), transparent 70%),
+    radial-gradient(ellipse 80% 50% at 110% 110%, rgba(14, 42, 74, 0.05), transparent 70%),
+    repeating-linear-gradient(45deg, rgba(14, 42, 74, 0.04) 0 1px, transparent 1px 6px);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-p a,
-li a,
-mat-card-title a,
-mat-card-content a {
-  color: var(--mat-sys-primary);
+::selection {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
   text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
+button {
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+input {
+  font-family: inherit;
+  color: inherit;
+}
 
 .error-container {
   margin-bottom: 1rem;
-  border: light-dark(col.$gray, col.$dark-gray);
-  background-color: light-dark(col.$light-gray, col.$darker-gray);
-  color: light-dark(col.$very-dark-gray, col.$very-light-gray);
-  border-radius: 4px;
-  padding: 16px;
+  border: 1px solid var(--line-strong);
+  background-color: color-mix(in oklab, var(--paper) 70%, var(--paper-2));
+  color: var(--ink);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 1.6;
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: var(--red);
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+  }
 }

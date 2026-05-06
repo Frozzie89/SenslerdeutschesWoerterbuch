@@ -1,19 +1,26 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'tagTranslation'
+  name: 'tagTranslation',
+  standalone: true,
 })
 export class TagTranslationPipe implements PipeTransform {
-
   transform(value: string | string[]): string {
     if (Array.isArray(value)) {
-      return value.map(tag => this.translations[tag] || tag).join(', ');
+      return value.map((tag) => this.translations[tag] ?? tag).join(', ');
     }
-    return this.translations[value] || value;
+    return this.translations[value] ?? value;
   }
 
-  private translations: { [key: string]: string } = {
+  private translations: Record<string, string> = {
     'curse-word': 'Schimpfwort',
+    'everyday': 'Alltag',
+    'school': 'Schule',
+    'idiom': 'Redensart',
+    'profession': 'Beruf',
+    'tradition': 'Tradition',
+    'children': 'Kinder',
+    'music': 'Musik',
+    'household': 'Haushalt',
   };
-
 }
